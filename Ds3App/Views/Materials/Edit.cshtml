@@ -1,0 +1,105 @@
+﻿@model Ds3App.Models.Material
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@using (Html.BeginForm("Edit", "Materials", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-horizontal">
+                <h2>Edit</h2>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        <p>
+                            @(ViewBag.Error)
+                        </p>
+                    </div>
+                }
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.IsDeleted)
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.Supplier, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.DropDownListFor(model => model.Supplier, (SelectList)ViewBag.DDLSupplier, "Select", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.MaterialName, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.MaterialName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MaterialName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.MaterialDescription, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.MaterialDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MaterialDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.StockQuantity, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.StockQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StockQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.LabelFor(model => model.MaterialImage, htmlAttributes: new { @class = "control-label" })
+                        <br />
+                        <input type="file" name="file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button class="btn btn-outline-success" type="submit"><span class="fa fa-save"></span> Save</button>&nbsp;<a class="btn btn-outline-danger" href="@(Url.Action("Index"))">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            @if (!string.IsNullOrEmpty(Model.MaterialImage))
+            {
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3>Current Image</h3>
+                        <img style="width:200px;max-width:100%;" src="~/ProjImages/@(Model.MaterialImage)" />
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

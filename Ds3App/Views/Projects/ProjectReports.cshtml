@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Ds3App.Models.Project>
+
+@{
+    ViewBag.Title = "ProjectReports";
+}
+
+<h2>Projects' Reports</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectReport)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectReport)
+        </td>
+    </tr>
+}
+
+</table>

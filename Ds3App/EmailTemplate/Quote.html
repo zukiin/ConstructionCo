@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <style>
+        b {
+            font-weight: 500
+        }
+    </style>
+    <div>
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>
+                    Quotation <text style="color:gray">#{ReferenceNumber}</text>
+                </h2>
+            </div>
+            <div class="col-sm-4">
+                <h2>
+                    Estimated Cost <text style="color:gray">{EstimatedCost}</text>
+                </h2>
+            </div>
+            <div class="col-sm-12">
+                <p>
+                    Please login in the system to accept or decline the quote after reviewing it.
+                </p>
+            </div>
+        </div>
+        <h2>&nbsp;&nbsp; </h2>
+        <hr />
+        <div class="row">
+            <div class="col-sm-4">
+                <b>ProjectName</b><br />
+                {ProjectName}
+            </div>
+            <div class="col-sm-4">
+                <b>Project Description</b><br />
+                {ProjectDescription}
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div><hr />
+        <div class="row">
+
+            <div class="col-sm-12">
+                <h2>Workers</h2>
+            </div>
+            <div class="col-sm-3">
+                <b>Foreman:</b>&nbsp;
+                {Foreman}
+            </div>
+            <div class="col-sm-3">
+                <b>Skilled Workers:</b>&nbsp;
+                {SkilledWorkers}
+            </div>
+            <div class="col-sm-3">
+                <b>Semi Skilled Workers:</b>&nbsp;
+                {SemiSkilledWorkers}
+            </div>
+            <div class="col-sm-3">
+                <b>General Workers:</b>&nbsp;
+                {GeneralWorkers}
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+
+            <div class="col-sm-12">
+                <h2>Tasks</h2>
+            </div>
+            <div class="col-sm-4">
+                <b>Skilled Worker Tasks:</b>&nbsp;
+                {SkilledWorkerTasks}
+            </div>
+            <div class="col-sm-4">
+                <b>Semi Skilled Worker Tasks:</b>&nbsp;
+                {SemiSkilledWorkerTasks}
+            </div>
+            <div class="col-sm-4">
+                <b>General Worker Tasks:</b>&nbsp;
+                {GeneralWorkerTasks}
+            </div>
+
+        </div><hr />
+        <div class="row">
+
+            <div class="col-sm-12">
+                <h2>Time Frame</h2>
+            </div>
+            <div class="col-sm-6">
+                <b>Start Date:</b>&nbsp;
+                {StartDate}
+            </div>
+            <div class="col-sm-6">
+                <b>End Date:</b>&nbsp;
+                {EndDate}
+            </div>
+
+
+        </div><hr />
+        <div class="row">
+
+            <div class="col-sm-12">
+                <h2>Durations</h2>
+            </div>
+            <div class="col-sm-6">
+                <b>Shifts:</b>&nbsp;
+                {Shifts}
+            </div>
+            <div class="col-sm-6">
+                <b>Shift Hours:</b>&nbsp;
+                {ShiftHours}
+            </div>
+        </div>
+        <br />
+        <div class="row">
+
+            <div class="col-sm-12">
+                <b>Work Weekends:</b>&nbsp;
+                {WorkWeekends}
+            </div>
+        </div>
+        <br />
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Ds3App.Models.Supplier>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Suppliers</h2>
+
+<p>
+    <a class="btn btn-outline-primary" href="@(Url.Action("Create"))"><span class="fa fa-plus"></span> Create Supplier</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SupplierName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupplierContact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupplierEmail)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupplierName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupplierContact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SupplierEmail)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            <a href="#" onclick="deleteItem('@item.Id')">Delete</a>
+        </td>
+    </tr>
+}
+
+</table>
+<script>
+     function deleteItem(id) {
+        var doDelete = confirm("Are you sure you want to delete this?");
+        if (doDelete) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("Delete")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+</script>

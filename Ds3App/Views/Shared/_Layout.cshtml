@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="~/Content/fontawesome-all.min.css" rel="stylesheet" />
+    <style>
+        .custwidth {
+            max-width: 100%;
+        }
+
+        .custjumbotron {
+            border-radius: 0;
+            text-align: center;
+        }
+
+        .custa {
+            text-decoration: none !important;
+        }
+
+        .facolor {
+            color: red !important;
+        }
+        .navbar-dark{
+            background-color:black/*#FFA500!important*/;
+            color:white!important;
+        }
+        .dropdown-menu > a:hover, .dropdown-menu > a:focus {
+            background-image:none !important;
+        }
+        .dropdown-menu > a:hover, .dropdown-menu > a:focus {
+            background-color:blue/*#FFA500*/;
+            color:black/*white*/;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top fixed-top-2">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/">J Optimistic</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Home</a>
+                    </li>
+                    @if (User.IsInRole("Client"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Quick Links
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a href="@(Url.Action("Index","QuotationRequests"))" class="dropdown-item">My Quotes</a>
+                                <a href="@(Url.Action("Index","Contracts"))" class="dropdown-item">My Contracts</a>
+                                <a href="@(Url.Action("Index","Payments"))" class="dropdown-item">My Payments</a>
+                                <a href="@(Url.Action("Index","Projects"))" class="dropdown-item">My Projects</a>
+                            </div>
+                        </li>
+                    }
+                    else if (User.IsInRole("Administrator"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Quick Links
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a href="@(Url.Action("User","Users"))" class="dropdown-item">Users</a>
+                                <a href="@(Url.Action("Index","Suppliers"))" class="dropdown-item">Suppliers</a>
+                                <a href="@(Url.Action("Index","Materials"))" class="dropdown-item">Material</a>
+                                <a href="@(Url.Action("Index","Equipments"))" class="dropdown-item">Equipment</a>
+                                <a href="@(Url.Action("Index","Admin"))" class="dropdown-item">Quote Requests</a>
+                                <a href="@(Url.Action("IndexAdmin","Contracts"))" class="dropdown-item">Contracts</a>
+                                <a href="@(Url.Action("IndexAdmin","Payments"))" class="dropdown-item">Payments</a>
+                                <a href="@(Url.Action("IndexAdmin","Projects"))" class="dropdown-item">Projects</a>
+                                <a href="@(Url.Action("IndexAdminTask","ConstructionTasks"))" class="dropdown-item">Task</a>
+                                <a href="@(Url.Action("ProjectWithForeman","Admin"))" class="dropdown-item">Assign Foreman</a>
+                                <a href="@(Url.Action("Index","Feedbacks"))" class="dropdown-item">Feedback</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        <br />
+        <div class="card">
+            <div class="card-body">
+                @RenderBody()
+            </div>
+        </div>
+        <br />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

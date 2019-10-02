@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<head>
+    <link href="~/Content/animate.css" rel="stylesheet" />
+</head>
+<style>
+   .bg-text {
+  background-color:navy; /* Fallback color */
+  background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+  color: white;
+  font-weight: bold;
+  border: 3px solid #f1f1f1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 80%;
+  padding: 20px;
+  text-align: center;
+}
+    body {
+        background-image: url('../../BackImage/home.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    footer {
+        display: none;
+    }
+</style>
+
+
+<div class="jumbotron text-center bg-text" style="background:space;color:black;">
+        <h1 style="font-size:74px;font-family:Calibri" class="animated bounceInDown">Welcome</h1>
+        <h1 class="animated bounceInLeft">to</h1>
+        <h1 class="animated bounceInRight">
+            J Optimistic
+        </h1>
+        <h6 class="animated bounceInUp">
+            Free quote.<br />
+            Professional Project Management Team
+        </h6>
+    </div>
+
+
+

@@ -1,0 +1,410 @@
+﻿@model Ds3App.Models.QuotationViewModel
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "CreateQuote";
+}
+<style>
+    img {
+        width: 50px;
+    }
+
+    .zoom:hover {
+        transform: scale(2.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+</style>
+@using (Html.BeginForm("CreateQuote", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ClientId)
+    @Html.HiddenFor(m => m.IsDeleted)
+    @Html.HiddenFor(m => m.Documents)
+    @Html.HiddenFor(m => m.QuoteRequestId)
+<div class="container">
+    <h2>Create Quote</h2>
+    @if (ViewBag.Error != null)
+    {
+        <h6 class="text-danger">@ViewBag.Error</h6>
+    }
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.ReferenceNumber, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.ReferenceNumber, new { htmlAttributes = new { @class = "form-control custwidth", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.ReferenceNumber, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control custwidth", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @Html.LabelFor(model => model.ProjectDescription, htmlAttributes: new { @class = "control-label" })
+
+            @Html.TextAreaFor(model => model.ProjectDescription, new { @class = "form-control custwidth", @readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.ProjectDescription, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br />
+    <h3>Workers</h3>
+    <hr />
+    <div class="row">
+        @*<div class="col-md-6">
+                @Html.Label("Number of foremen")
+
+                @Html.EditorFor(model => model.Foreman, new { htmlAttributes = new { @class = "form-control custwidth", @type="number", @disabled = "required", @value=1 } })
+                @Html.ValidationMessageFor(model => model.Foreman, "", new { @class = "text-danger" })
+            </div>*@
+
+        <div class="col-md-6">
+            @Html.Label("Number of skilled workers")
+
+            @Html.EditorFor(model => model.SkilledWorkers, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 50 } })
+            @Html.ValidationMessageFor(model => model.SkilledWorkers, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            @Html.Label("Number of SemiSkilledWorkers")
+
+            @Html.EditorFor(model => model.SemiSkilledWorkers, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 50 } })
+            @Html.ValidationMessageFor(model => model.SemiSkilledWorkers, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+                @Html.Label("Number of GeneralWorkers")
+
+                @Html.EditorFor(model => model.GeneralWorkers, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 50 } })
+                @Html.ValidationMessageFor(model => model.GeneralWorkers, "", new { @class = "text-danger" })
+            </div>
+    </div>
+    <br />
+    <h3>Time Frame</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control custwidth datepicker" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label" })
+
+            @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control custwidth datepickerend" } })
+            @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <br />
+    <h3>Durations</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            @Html.Label("number of shifts in a day")
+
+            @Html.EditorFor(model => model.Shifts, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 3 } })
+            @Html.ValidationMessageFor(model => model.Shifts, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-6">
+            @Html.Label("number of hours in a shift")
+
+            @Html.EditorFor(model => model.ShiftHours, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 8 } })
+            @Html.ValidationMessageFor(model => model.ShiftHours, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br />
+    <h3>Tasks</h3>
+    <hr />
+	<div class="row">
+		<br /><br />
+			<div class="col-md-6">
+				@Html.Label("Number of Semi-Skilled Worker Tasks required")
+
+				@Html.EditorFor(model => model.SemiSkilledWorkerTasks, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 50 } })
+				@Html.ValidationMessageFor(model => model.SemiSkilledWorkerTasks, "", new { @class = "text-danger" })
+			</div>
+			<br /><br />
+			<div class="col-md-6">
+				@Html.Label("Number of Skilled Worker Tasks required")
+
+				@Html.EditorFor(model => model.SkilledWorkerTasks, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 50 } })
+				@Html.ValidationMessageFor(model => model.SkilledWorkerTasks, "", new { @class = "text-danger" })
+			</div>
+			<br /><br />
+			<div class="col-md-6">
+				@Html.Label("Number of General Worker Tasks required")
+
+				@Html.EditorFor(model => model.GeneralWorkerTasks, new { htmlAttributes = new { @class = "form-control custwidth", @type = "number", @required = "required", @min = 1, @max = 50 } })
+				@Html.ValidationMessageFor(model => model.GeneralWorkerTasks, "", new { @class = "text-danger" })
+			</div>
+			<br /><br />
+			<br /><br />
+		</div>
+		<hr/>
+
+    <div class="row">
+        <br /><br />
+        <div class="col-md-6">
+            @Html.Label("Semi-Skilled Worker Tasks")
+
+            @Html.EditorFor(model => model.SSWTaskDescription, new { htmlAttributes = new { @class = "form-control custwidth", @type = "text", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.SSWTaskDescription, "", new { @class = "text-danger" })
+        </div>
+        <br /><br />
+        <div class="col-md-6">
+            @Html.Label("Skilled Worker Tasks")
+
+            @Html.EditorFor(model => model.SWTaskDescription, new { htmlAttributes = new { @class = "form-control custwidth", @type = "text", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.SWTaskDescription, "", new { @class = "text-danger" })
+        </div>
+        <br /><br />
+        <div class="col-md-6">
+            @Html.Label("General Worker Tasks")
+
+            @Html.EditorFor(model => model.GWTaskDescription, new { htmlAttributes = new { @class = "form-control custwidth", @type = "text", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.GWTaskDescription, "", new { @class = "text-danger" })
+        </div>
+        <br /><br />
+        <br /><br />
+
+        <div class="col-md-12">
+            @Html.LabelFor(model => model.WorkWeekends, htmlAttributes: new { @class = "control-label" })
+
+            <div class="checkbox">
+                @Html.EditorFor(model => model.WorkWeekends)
+                @Html.ValidationMessageFor(model => model.WorkWeekends, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+    </div>
+    <br />
+    <h3>Material</h3>
+    <input class="form-control mr-sm-2" type="text" id="searchMaterialTerm" name="searchMaterialTerm" placeholder="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchMaterial('@Model.QuoteRequestId')">Search</button>
+    <table class="table" id="MaterialContainer">
+        <tr>
+            <th>Image</th>
+            <th>Material Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var item in Model.QuoteMaterials)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.MaterialImage))
+                    {
+                        <img class="zoom" src="~/ProjImages/@(item.MaterialImage)" />
+                    }
+                    else
+                    {
+                        <b>n/a</b>
+                    }
+                </td>
+                <td>@item.MaterialName</td>
+                <td>@item.MaterialDescription</td>
+                <td><input type="number" id="@(item.Id)|mat" value="@(item.Quantity)" style="max-width:100%;width:50px" /></td>
+                <td><a href="javascript:void(0)" onclick="updateMatQty('@item.Id')">Update Quantity</a></td>
+            </tr>
+        }
+    </table>
+    <p class="text-center">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="loadMoreMaterial('@Model.QuoteRequestId')">Load More</button>
+
+    </p>
+    <br />
+    <h3>Equipment</h3>
+    <input class="form-control mr-sm-2" type="text" id="searchTerm" name="searchTerm" placeholder="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchEquiptment('@Model.QuoteRequestId')">Search</button>
+    <table class="table" id="EquiptContainer">
+        <tr>
+            <th>Image</th>
+            <th>Equipment Name</th>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var item in Model.QuoteEquipments)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.EquipmentImage))
+                    {
+                        <img class="zoom" src="~/ProjImages/@(item.EquipmentImage)" />
+                    }
+                    else
+                    {
+                        <b>n/a</b>
+                    }
+                </td>
+                <td>@item.EquipmentName</td>
+                <td>@item.Model</td>
+                <td>@item.Brand</td>
+                <td><input type="number" id="@(item.Id)|equip" value="@(item.Quantity)" style="max-width:100%;width:50px" /></td>
+                <td><a href="javascript:void(0)" onclick="updateEquipQty('@item.Id')">Update Quantity</a></td>
+            </tr>
+        }
+
+    </table>
+    <p class="text-center">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="loadMoreEquiptment('@Model.QuoteRequestId')">Load More</button>
+
+    </p>
+    <br />
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-outline-success" type="submit"><span class="fa fa-save"></span> Save</button>&nbsp;<a class="btn btn-outline-danger" href="@(Url.Action("Index"))">Back</a>
+        </div>
+    </div>
+</div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({ minDate: 0 });
+        });
+        $(function () {
+            $(".datepickerend").datepicker({ minDate: 1 });
+        });
+    </script>
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".only-numeric").bind("keypress", function (e) {
+            var keyCode = e.which ? e.which : e.keyCode
+
+            if (!(keyCode >= 48 && keyCode <= 57)) {
+                return false;
+            }
+        });
+    });
+
+    function updateMatQty(id) {
+        var qty = document.getElementById(id + '|mat').value;
+          $.ajax({
+                type: "Post",
+                url: "@Url.Action("UpdateMatQty")?array=" + id + ',' + qty,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function () {
+                    document.getElementById(id + '|mat').value = qty;
+                    alert('Quantity updated successful');
+                },
+                error: function () {
+                    return;
+                }
+            });
+    }
+
+    function updateEquipQty(id) {
+        var qty = document.getElementById(id + '|equip').value;
+          $.ajax({
+                type: "Post",
+                url: "@Url.Action("UpdateEquipQty")?array=" + id + ',' + qty,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function () {
+                    document.getElementById(id + '|equip').value = qty;
+                    alert('Quantity updated successful');
+                },
+                error: function () {
+                    return;
+                }
+            });
+    }
+
+    function searchEquiptment(id) {
+        var term = $('#searchTerm').val();
+
+        $.ajax({
+            url: "/Admin/SearchEquiptment?id=" + id + "&searchTerm=" + term,
+            type: "GET",
+            async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (partial) {
+                var container = $("#EquiptContainer");
+                container.empty();
+                container.html(partial);
+            },
+            error: function () {
+                console.error('An error has occured');
+            }
+        })
+    }
+    function searchMaterial(id) {
+        var term = $('#searchMaterialTerm').val();
+        $.ajax({
+            url: "/Admin/SearchMarterial?id=" + id + "&searchTerm=" + term,
+            type: "GET",
+            async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (partial) {
+                var container = $("#MaterialContainer");
+                container.empty();
+                container.html(partial);
+            },
+            error: function () {
+                console.error('An error has occured');
+            }
+        })
+    }
+
+    var equipPage = 2;
+    var materialPage = 2;
+    function loadMoreEquiptment(id) {
+        $.get("/Admin/PagedEquiptment?id=" + id + "&page=" + equipPage, function (partialview) {
+            $("#EquiptContainer").append(partialview);
+            equipPage++;
+        });
+    }
+    function loadMoreMaterial(id) {
+        $.get("/Admin/PagedMarterial?id=" + id + "&page=" + materialPage, function (partialview) {
+            $("#MaterialContainer").append(partialview)
+            console.log(partialview);
+            materialPage++;
+        });
+    }
+    /*let processing;
+    let page = 1;
+    let loading = $('#loading');
+
+    $(document).ready(function () {
+        $(document).scroll(function (e) {
+
+            if (processing) {
+                loading.show();
+                return false;
+            }
+
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                page++;
+                processing = true;
+                $.get('/track/loadmoretracks?page=' + page, function (data) {
+                    $('.grid-track-list-container').append(data);
+                    processing = false;
+                    loading.hide();
+                });
+            }
+        });
+    });*/
+</script>

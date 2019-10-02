@@ -1,0 +1,51 @@
+﻿@model Ds3App.Models.Payment
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+@using (Html.BeginForm("Upload", "Payments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h2>Upload</h2>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert">&times;</button>
+                <p>
+                    @(ViewBag.Error)
+                </p>
+            </div>
+        }
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.QuotationReference)
+        @Html.HiddenFor(model => model.ProjectName)
+        @Html.HiddenFor(model => model.AmountDue)
+        @Html.HiddenFor(model => model.Status)
+        @Html.HiddenFor(model => model.ContractId)
+        @Html.HiddenFor(model => model.ProofOfPayment)
+        @Html.HiddenFor(model => model.IsDeleted)
+        <p class="container">
+            Upload proof of payment for project <b>@Model.ProjectName</b><br />
+            Amount: <b>@Model.AmountDue.ToString("C")</b><br />
+            Quotation Reference: <b>#@Model.QuotationReference</b><br />
+        </p>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProofOfPayment, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="file" required />
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button class="btn btn-outline-success" type="submit"><span class="fa fa-save"></span> Save</button>&nbsp;<a class="btn btn-outline-danger" href="@(Url.Action("Index"))">Back</a>
+            </div>
+        </div>
+    </div>
+}
+

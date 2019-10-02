@@ -1,0 +1,205 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+}
+<style>
+
+	body {
+		background-image: url('../../BackImage/home.jpg');
+		/*background-image: url('../../BackImage/construction.jpg');*/
+		background-repeat: no-repeat;
+		background-position: center;
+		background-attachment: fixed;
+	}
+
+	h3 {
+		font-size: 22px;
+	}
+
+	footer {
+		display: none;
+	}
+
+	.jumbotron {
+		background-color: cornflowerblue;
+		border: double;
+		border-color: darkslateblue !important;
+		color: black !important;
+	}
+
+		.jumbotron:hover {
+			background-color: gray;
+			border: solid;
+			border-color: powderblue !important;
+			color: navy !important;
+		}
+</style>
+@if (User.IsInRole("Administrator"))
+{
+	<div class="row">
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("User","Users"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Users</h3>
+					<i class="fas fa-2x fa-users"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("Index","Suppliers"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Suppliers</h3>
+					<i class="fas fa-2x fa-truck"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("Index","Materials"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Material</h3>
+					<i class="fas fa-2x fa-cubes"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("Index","Equipments"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Equipment</h3>
+					<i class="fas fa-2x fa-truck-pickup"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("IndexAdminTask","ConstructionTasks"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Task</h3>
+					<i class="fas fa-2x fa-tasks"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("Index","Admin"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Quote Requests</h3>
+					<i class="fas fa-2x fa-folder-open"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("IndexAdmin","Contracts"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Contracts</h3>
+					<i class="fas fa-2x fa-file-signature"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("IndexAdmin","Payments"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Payments</h3>
+					<i class="fas fa-2x fa-credit-card"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("IndexAdmin","Projects"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Projects</h3>
+					<i class="fas fa-2x fa-drafting-compass"></i>
+				</div>
+			</a>
+		</div>
+
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("ProjectWithForeman","Admin"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Assign Foreman</h3>
+					<i class="fas fa-2x fa-bookmark"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-3">
+			<a class="custa" href="@(Url.Action("Index","Feedbacks"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Feedback</h3>
+					<i class="fas fa-2x fa-comments"></i>
+				</div>
+			</a>
+		</div>
+	</div>
+}
+@if (User.IsInRole("Client"))
+{
+	<div class="row">
+
+		<div class="col-sm-6">
+			<a class="custa" href="@(Url.Action("Index","QuotationRequests"))">
+				<div class="jumbotron custjumbotron">
+					<h3>My Quote</h3>
+					<i class="fas fa-2x fa-folder-open"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-6">
+			<a class="custa" href="@(Url.Action("Index","Contracts"))">
+				<div class="jumbotron custjumbotron">
+					<h3>My Contracts</h3>
+					<i class="fas fa-2x fa-file-signature"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-6">
+			<a class="custa" href="@(Url.Action("Index","Payments"))">
+				<div class="jumbotron custjumbotron">
+					<h3>My Payments</h3>
+					<i class="fas fa-2x fa-credit-card"></i>
+				</div>
+			</a>
+		</div>
+		<div class="col-sm-6">
+			<a class="custa" href="@(Url.Action("Index","Projects"))">
+				<div class="jumbotron custjumbotron">
+					<h3>My Projects</h3>
+					<i class="fas fa-2x fa-drafting-compass"></i>
+				</div>
+			</a>
+		</div>
+	</div>
+}
+@if (User.IsInRole("Foreman"))
+{
+	<div class="row">
+		<div class="col-sm-12">
+			<a class="custa" href="@(Url.Action("IndexForeman","Projects"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Projects</h3>
+					<i class="fas fa-2x fa-drafting-compass"></i>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<a class="custa" href="@(Url.Action("ProjectReports","Projects"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Project Report</h3>
+					<i class="fas fa-2x fa-comment"></i>
+				</div>
+			</a>
+		</div>
+	</div>
+
+}
+@if (User.IsInRole("Worker"))
+{
+	<div class="row">
+		<div class="col-sm-12">
+			<a class="custa" href="@(Url.Action("MyTasks","Projects"))">
+				<div class="jumbotron custjumbotron">
+					<h3>Task</h3>
+					<i class="fas fa-2x fa-tasks"></i>
+				</div>
+			</a>
+		</div>
+	</div>
+
+}

@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Ds3App.Models.Equipment>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    img {
+        width: 50px;
+    }
+
+    .zoom:hover {
+        transform: scale(2.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+</style>
+<h2>Equipments</h2>
+
+<p>
+    <a class="btn btn-outline-primary" href="@(Url.Action("Create"))"><span class="fa fa-plus"></span> Create Equipment</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EquipmentImage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EquipmentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Brand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RatePerHour)
+        </th>
+		<th>
+			Due for Maintenance
+		</th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+	{
+        <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(item.EquipmentImage))
+				{
+                    <img class="zoom" src="~/ProjImages/@(item.EquipmentImage)" />
+				}
+				else
+				{
+                    <b>n/a</b>
+				}
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EquipmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RatePerHour)
+            </td>
+
+			<td>
+				@{ 
+					if (item.LastMaintenance.AddHours(1) < DateTime.Now)
+					{
+						@Html.ActionLink("Book for Maintenance", "BookingConfirmation", new { id = item.Id })
+					}
+				}
+			</td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                <a href="#" onclick="deleteItem('@item.Id')">Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<script>
+     function deleteItem(id) {
+        var doDelete = confirm("Are you sure you want to delete this?");
+        if (doDelete) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("Delete")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+</script>

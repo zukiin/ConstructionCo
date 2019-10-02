@@ -1,0 +1,58 @@
+﻿@model Ds3App.Models.ConstructionTask
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ConstructionTask</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RatePerHour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RatePerHour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WorkerTypeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WorkerTypeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

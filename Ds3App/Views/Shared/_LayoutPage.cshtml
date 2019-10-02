@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="~/Content/fontawesome-all.min.css" rel="stylesheet" />
+    <style>
+        .custwidth {
+            max-width: 100%;
+        }
+
+        .custjumbotron {
+            border-radius: 0;
+            text-align: center;
+        }
+
+
+        .navbar-dark {
+            background-color:black/*#FFA500!important*/;
+            color:white!important;
+        }
+
+ 
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top fixed-top-2">
+        <div class="container">
+            <a class="navbar-brand text-white" href="/">J Optimistic</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        <br />
+        @RenderBody()
+        <br />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

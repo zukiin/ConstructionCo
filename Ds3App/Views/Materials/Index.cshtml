@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Ds3App.Models.Material>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    img{
+        width:50px;
+    }
+    .zoom:hover {
+  transform: scale(2.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+</style>
+    <h2>Materials</h2>
+
+<p>
+    <a class="btn btn-outline-primary" href="@(Url.Action("Create"))"><span class="fa fa-plus"></span> Create Material</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MaterialImage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaterialName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaterialDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StockQuantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SupplierName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @if (!string.IsNullOrEmpty(item.MaterialImage))
+        {
+            <img class="zoom" src="~/ProjImages/@(item.MaterialImage)" />
+        }
+        else
+        {
+            <b>n/a</b>
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MaterialName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MaterialDescription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Price)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StockQuantity)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SupplierName)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+        <a href="#" onclick="deleteItem('@item.Id')">Delete</a>
+    </td>
+</tr>
+    }
+
+</table>
+<script>
+     function deleteItem(id) {
+        var doDelete = confirm("Are you sure you want to delete this?");
+        if (doDelete) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("Delete")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+</script>

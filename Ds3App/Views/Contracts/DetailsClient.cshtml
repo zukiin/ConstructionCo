@@ -1,0 +1,190 @@
+﻿@model Ds3App.Models.Contract
+@using Ds3App.Extension
+
+@{
+    ViewBag.Title = "Details";
+}
+<style>
+    .hidden {
+        display: none;
+    }
+
+    li {
+        font-size: 18px;
+        list-style-type: none;
+    }
+
+    #results {
+        display: block;
+        text-align: center;
+    }
+
+    #paygate {
+        display: none;
+    }
+</style>
+<div class="container text-center text-success" id="acceptDiv" style="display:none">
+    <h1>Contract Accepted</h1>
+    <span class="fa fa-check fa-10x"></span>
+    <p>
+        A payment <b>R @(Model.ProjectCost)</b> before any work start as per contract aggrement.<br />
+        Please upload proof of payment once the payment is done under the <b>My Payment</b> link.<br />
+        An email has been sent to <b>@Model.Email</b> with banking details and the contract content.<br /><br />
+        <a class="btn btn-outline-success" href="@(Url.Action("Index","Home"))">Go to home</a>&nbsp;<input type="button" id="btn-pay" value="Procced to pay" class="btn btn-outline-primary" />&nbsp;<a href="" class="btn btn-outline-primary">Cancel</a>
+
+        <ul id="results"></ul>
+        <div class="hidden">
+            <form action="https://secure.paygate.co.za/PayWeb3/process.trans" method="POST">
+                <input id="PAY_REQUEST_ID" name="PAY_REQUEST_ID" type="hidden" />
+                <input id="CHECKSUM" name="CHECKSUM" type="hidden" />
+                <input id="REDIRECT" type="submit" />
+            </form>
+        </div>
+    </p>
+</div>
+<div class="container text-center text-danger" id="declineDiv" style="display:none">
+    <h1>Contract Declined</h1>
+    <span class="fa fa-times fa-10x"></span>
+    <p>
+        We are sorry to see we did not meet your requirements.<br />
+        Please feel free to use our services in the future or contact us for any queries.<br /><br />
+        <a class="btn btn-outline-danger" href="@(Url.Action("Index","Home"))">Go to home</a>
+    </p>
+</div>
+<div class="container text-center" id="mainDiv">
+    <div id="divPrint">
+        <h1>Contract</h1>
+        <p>
+            Between<br />
+            <b>@(Model.ClientName) @(Model.ClientSurname)</b> and <b>@(Model.ContractIssuedBy)</b>
+            <br /><br />
+            THIS AGREEMENT made on the <b>@DateTime.Now.ToLongDateString()</b>, time  <b>@DateTime.Now.ToShortTimeString()</b> for Project
+            <b>@(Model.ProjectName)</b> cost estimated at <b>@(Model.ProjectCost)</b> based on the acceptence of Quote <b>#@(Model.QuotationReference)</b>
+            accepted on <b>@(Model.DateTimeStamp).</b> Client @(Model.ClientName) @(Model.ClientSurname) contact are as follow email <b>@(Model.Email)</b>
+            and contact number <b>@(Model.Contact).</b>
+            <br /><br />States:<br /><br />
+            NOW THEREFORE, in consideration of the mutual promises and for other good and valuable consideration exchanged by the Parties as set forth in this Agreement, the Parties, intending to be legally bound, hereby mutually agrees as follows:
+            <br /><br />
+            1. Description of Work- Contractor shall perform the work described in the Project, in accordance with Owner’s contract plans and specifications, attached in the Quotation, this Agreement and any Change Order, as defined herein, (collectively, the "Contract Documents") at the Property.
+            <br /><br />
+            2. Contract Price and Payments- Owner agrees to pay Contractor for the worker before the project begins so that the company can wil be able to buy the resources needed to do the project. Payment of this amount is subject to additions or deductions in accordance with any mutually agreed to changes and/or modifications in the Work, and the other documents to which this Agreement is subject.
+            <br /><br />
+            3. Materials and Labor- Contractor shall provide and pay for all labor and equipment, including tools, construction equipment, machinery, transportation and all other facilities and services, and all materials as described in Exhibit C necessary for the completion of the Work. All materials shall be good quality and new, unless the Contract Documents require or permit otherwise. Contractor may substitute materials only with the prior written approval of Owner.
+            <br /><br />
+            4. Instructions- Owner shall give all instructions to Contractor, and shall furnish all necessary surveys for the Work. Unless otherwise provided in the Contract Documents, Owner shall secure and pay for all necessary easements, assessments or other approvals necessary for permanent structures or permanent changes in existing structures or facilities which are necessary to complete the Work.
+            <br /><br />
+            5. Licenses and Permits- Contractor shall obtain all licenses and permits necessary for proper completion of the Work. Contractor is responsible for the cost of any necessary permits or licenses.
+            <br /><br />
+            6. Laws and Regulations- Contractor shall perform the Work in a workmanlike manner. Contractor shall comply with all applicable federal, state, and local laws, regulations and ordinances, and any safety requirements of Owner (the “Applicable Laws”) in the performance of the Work. Contractor shall promptly notify Owner upon discovery of any variance between the Applicable Laws and the Construction Documents.
+
+
+            
+            <br /><br />
+            Sign_______________________________<br />Date: @DateTime.Now.ToShortDateString()
+        </p>
+    </div>
+    <p>
+        <hr id="spLine" />
+        @if (!Helper.IsRespondedTo(Model.Id))
+        {
+            <a href="#" id="btnAccept" class="btn btn-outline-success"><span class="fa fa-check"></span> Accept</a><span>&nbsp;</span><a href="#" id="btnDecline" class="btn btn-outline-danger"><span class="fa fa-times"></span> Decline</a><span>&nbsp;</span><a href="#" id="btnPrint" onclick="Print('divPrint')" class="btn btn-outline-primary"><span class="fa fa-print"></span> Print</a><span>&nbsp;</span><a id="btnBack" href="@Url.Action("Index")" class="btn btn-outline-dark">Back to contracts</a>
+
+        }
+        else
+        {
+            <a href="#" id="btnPrint" onclick="Print('divPrint')" class="btn btn-outline-primary"><span class="fa fa-print"></span> Print</a><span>&nbsp;</span><a id="btnBack" href="@Url.Action("Index")" class="btn btn-outline-dark">Back to contracts</a>
+
+        }
+    </p>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    function Print(divPrint) {
+            var printContents = document.getElementById(divPrint).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+    }
+
+    $('#btnAccept').click(function () {
+        var id = '@Model.Id';
+        var check = confirm("Are you sure you want to accept this contract?");
+        if (check) {
+              $.ajax({
+                type: "Get",
+                url: "@Url.Action("Accept")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                  success: function (data) {
+                      $('#mainDiv').hide()
+                      $('#declineDiv').hide()
+                      $('#acceptDiv').show()
+                },
+                error: function (e) {
+                    return;
+                }
+            })
+          }
+        })
+    $('#btnDecline').click(function () {
+        var id = '@Model.Id';
+        var check = confirm("Are you sure you want to decline this contract?");
+        if (check) {
+              $.ajax({
+                type: "Get",
+                url: "@Url.Action("Decline")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                      $('#mainDiv').hide()
+                      $('#acceptDiv').hide()
+                      $('#declineDiv').show()
+                },
+                error: function (e) {
+                    return;
+                }
+            })
+          }
+        })
+</script>
+<script type="text/javascript">
+    $('#btn-pay').on('click', function () {
+        let node = document.createElement("li");
+        node.innerText = "Processing...";
+        document.querySelector("#results").appendChild(node);
+        var id = '@(Model.Id)';
+        console.log(id);
+        $.get(`/pay/getrequest?id=` + id)
+            .done(data => success(data))
+            .fail(err => error(err));
+    });
+
+    function success(data) {
+        let requestNode = document.createElement("li");
+        requestNode.innerText = "Request retrieved";
+        document.querySelector("#results").appendChild(requestNode);
+
+        requestNode.innerText = data.message;
+        if (data.success) {
+            $("#PAY_REQUEST_ID").val(data.results.PAY_REQUEST_ID);
+            $("#CHECKSUM").val(data.results.CHECKSUM);
+
+
+            let redirectNode = document.createElement("li");
+            redirectNode.innerText = "Redirecting...";
+            document.querySelector("#results").appendChild(redirectNode);
+
+            $("#REDIRECT").click();
+        }
+    }
+
+    function error(data) {
+        console.log("Error");
+        let node = document.createElement("li");
+        node.innerText = data;
+        document.querySelector("#results").appendChild(node);
+    }
+</script>

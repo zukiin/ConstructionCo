@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Ds3App.Models.Project>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Projects</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Progress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompleteTasks)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectCost)
+            </td>
+            <td>
+                @(item.StartDate.ToShortDateString())
+            </td>
+            <td>
+                @(item.EndDate.ToShortDateString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Progress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompleteTasks)
+            </td>
+           
+        </tr>
+    }
+
+</table>

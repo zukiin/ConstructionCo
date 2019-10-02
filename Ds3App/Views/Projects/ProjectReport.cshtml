@@ -1,0 +1,20 @@
+﻿@model Ds3App.Models.Project
+@{
+	ViewBag.Title = "ProjectReport";
+}
+
+@using (Html.BeginForm())
+{
+	<h2>Project Report</h2>
+	<br />
+	<div class="col-md-6">
+		@Html.EditorFor(model => model.ProjectReport, new { htmlAttributes = new { @class = "form-control custwidth", @type = "text", @required = "required" } })
+		@Html.ValidationMessageFor(model => model.ProjectReport, "", new { @class = "text-danger" })
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<button class="btn btn-outline-success" type="submit"><span class="fa fa-save"></span> Save</button>
+		</div>
+	</div>
+}

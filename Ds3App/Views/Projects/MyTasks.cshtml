@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Ds3App.Models.ProjectTask>
+@using Ds3App.Models
+@{
+    ApplicationDbContext context = new ApplicationDbContext();
+    ViewBag.Title = "ViewTasks";
+}
+
+<h2>My Tasks</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ConstructionTask)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateAssigned)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </th>
+        <th>Status</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @(context.ConstructionTask.Find(item.ConstructionTask).TaskName)
+            </td>
+            <td>
+                @(item.DateAssigned.ToShortDateString())
+            </td>
+            <td>
+                @(item.DueDate.ToShortDateString())
+            </td>
+            <td>
+                @(item.IsCompleted ? "Completed" : "Pending")
+            </td>
+            @if (item.IsCompleted)
+            {
+                <td>
+                    <span class="fa fa-check text-success"></span>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a href="#" onclick="completeItem('@item.Id')">Complete</a> 
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+<script>
+    function completeItem(id) {
+        var doDelete = confirm("Are you sure you want to complete this?");
+        if (doDelete) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("CompleteTask")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+</script>

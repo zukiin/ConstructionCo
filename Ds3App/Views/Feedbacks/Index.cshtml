@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Ds3App.Models.Feedback>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Client(s)</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Client)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTimeStamp)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Client)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTimeStamp)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

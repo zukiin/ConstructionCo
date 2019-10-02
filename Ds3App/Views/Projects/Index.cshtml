@@ -1,0 +1,159 @@
+﻿@model IEnumerable<Ds3App.Models.Project>
+@using Ds3App.Extension
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Projects</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Progress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompleteTasks)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjectName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjectDescription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjectCost)
+    </td>
+    <td>
+        @(item.StartDate.ToShortDateString())
+    </td>
+    <td>
+        @(item.EndDate.ToShortDateString())
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Progress)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CompleteTasks)
+    </td>
+    <td>
+        @if (Helper.ProjectComplete(item.Id))
+        {
+            if (Helper.Commented(item.Id))
+            {
+                <span class="fa fa-check text-success"></span>
+            }
+            else
+            {
+                <a href="#" onclick="comment('@item.Id')">Add Comment</a>
+            }
+
+        }
+    </td>
+</tr>
+}
+
+</table>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Write Comment<br />
+                <textarea id="modalcomment" class="form-control" style="max-width:100%">
+
+                </textarea>
+                <h6 id="modalerror" class="text-danger" style="display:none"></h6>
+                <input type="text" style="display:none" id="modalid" value="" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btnSave" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="feedbackmodal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for the feedback.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script>
+    function comment(id) {
+        console.log(id);
+        $('#modalid').val(id);
+        $('#exampleModal').modal('show');
+    }
+
+    $('#btnSave').click(function () {
+        if ($('#modalcomment').val().trim().length == 0) {
+            $('#exampleModal').modal('show');
+            $('#modalerror').show();
+            $('#modalerror').text('The comment field is required.');
+            return;
+        }
+        $('#exampleModal').modal('hide');
+        $('#modalerror').text('');
+        $('#modalerror').hide();
+        var com = $('#modalcomment').val();
+        var id = $('#modalid').val();
+        var model = {
+            id: id,
+            com: com
+        }
+         $.ajax({
+                type: "Post",
+                url: "@Url.Action("Comment")",
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(model),
+                success: function (data) {
+                    location.reload();
+                    $('#feedbackmodal').modal('show');
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+    })
+</script>

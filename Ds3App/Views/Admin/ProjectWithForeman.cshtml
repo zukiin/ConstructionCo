@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Ds3App.Models.ProjectWithForemanViewModel>
+
+@{
+    ViewBag.Title = "ProjectWithForeman";
+}
+
+<h2>Project(s) With Foreman</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.QuotationReference)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Foreman)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.QuotationReference)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectCost)
+        </td>
+        <td>
+            @if (string.IsNullOrEmpty(item.Foreman))
+            {
+                <b class="text-danger">Not assigned</b>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.Foreman)
+            }
+        </td>
+        <td>
+            @if (string.IsNullOrEmpty(item.Foreman))
+            {
+                @Html.ActionLink("Assign", "AddForemanToProject", new { id = item.Id })
+            }
+            else
+            {
+                <a href="#" onclick="deleteItem('@item.Id')">Remove</a>
+            }
+        </td>
+    </tr>
+}
+
+</table>
+<script>
+     function deleteItem(id) {
+        var doDelete = confirm("Are you sure you want to remove this foreman?");
+        if (doDelete) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("RemoveForemanToProjectAjax")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    window.location.reload()
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+
+</script>

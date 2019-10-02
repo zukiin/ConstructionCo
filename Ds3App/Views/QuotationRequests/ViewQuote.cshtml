@@ -1,0 +1,210 @@
+﻿@model Ds3App.Models.Quotation
+
+@{
+    ViewBag.Title = "ViewQuote";
+}
+
+<style>
+    b {
+        font-weight: 500
+    }
+</style>
+<div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h2>
+                Quotation <text style="color:gray">#@(Model.ReferenceNumber)</text>
+            </h2>
+        </div>
+        <div class="col-sm-4">
+            <h2>
+                @Html.DisplayNameFor(model => model.EstimatedCost)<text style="color:gray"> @(Model.EstimatedCost.ToString("C"))</text>
+            </h2>
+        </div>
+        <div class="col-sm-4">
+            @if (Model.Approved)
+            {
+                <h2>Status : <text class="text-success">Accepted</text></h2>
+            }
+            else if (Model.Declined)
+            {
+                <h2>Status : <text class="text-danger">Declined</text></h2>
+            }
+            else
+            {
+                <h2>Status : <text class="text-warning">Pending</text></h2>
+            }
+        </div>
+        
+    </div>
+    <h2>&nbsp;&nbsp; </h2>
+    <hr />
+    <div class="row">
+        <div class="col-sm-4">
+            <b>@Html.DisplayNameFor(model => model.ProjectName)</b><br />
+            @Html.DisplayFor(model => model.ProjectName)
+        </div>
+        <div class="col-sm-4">
+            <b>@Html.DisplayNameFor(model => model.ProjectDescription)</b><br />
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div><hr />
+    @*<div class="row">
+
+        <div class="col-sm-12">
+            <h2>Workers</h2>
+        </div>
+        <div class="col-sm-3">
+            <b>@Html.DisplayNameFor(model => model.Foreman):</b>&nbsp;
+            @Html.DisplayFor(model => model.Foreman)
+        </div>
+        <div class="col-sm-3">
+            <b>@Html.DisplayNameFor(model => model.SkilledWorkers):</b>&nbsp;
+            @Html.DisplayFor(model => model.SkilledWorkers)
+        </div>
+        <div class="col-sm-3">
+            <b>@Html.DisplayNameFor(model => model.SemiSkilledWorkers):</b>&nbsp;
+            @Html.DisplayFor(model => model.SemiSkilledWorkers)
+        </div>
+        <div class="col-sm-3">
+            <b>@Html.DisplayNameFor(model => model.GeneralWorkers):</b>&nbsp;
+            @Html.DisplayFor(model => model.GeneralWorkers)
+        </div>
+    </div>
+    <hr />*@
+    <div class="row">
+
+        <div class="col-sm-12">
+            <h2>Tasks</h2>
+        </div>
+        <div class="col-sm-4">
+            <b>@Html.DisplayNameFor(model => model.SWTaskDescription):</b>&nbsp;
+            @Html.DisplayFor(model => model.SWTaskDescription)
+        </div>
+        <div class="col-sm-4">
+            <b>@Html.DisplayNameFor(model => model.SSWTaskDescription):</b>&nbsp;
+            @Html.DisplayFor(model => model.SSWTaskDescription)
+        </div>
+        <div class="col-sm-4">
+            <b>@Html.DisplayNameFor(model => model.GWTaskDescription):</b>&nbsp;
+            @Html.DisplayFor(model => model.GWTaskDescription)
+        </div>
+
+    </div><hr />
+    <div class="row">
+
+        <div class="col-sm-12">
+            <h2>Time Frame</h2>
+        </div>
+        <div class="col-sm-6">
+            <b>@Html.DisplayNameFor(model => model.StartDate):</b>&nbsp;
+            @(Model.StartDate.ToLongDateString())
+        </div>
+        <div class="col-sm-6">
+            <b>@Html.DisplayNameFor(model => model.EndDate):</b>&nbsp;
+            @(Model.EndDate.ToLongDateString())
+        </div>
+
+
+    </div><hr />
+    <div class="row">
+
+        <div class="col-sm-12">
+            <h2>Durations</h2>
+        </div>
+        <div class="col-sm-6">
+            <b>@Html.DisplayNameFor(model => model.Shifts):</b>&nbsp;
+            @Html.DisplayFor(model => model.Shifts)
+        </div>
+        <div class="col-sm-6">
+            <b>@Html.DisplayNameFor(model => model.ShiftHours):</b>&nbsp;
+            @Html.DisplayFor(model => model.ShiftHours)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+
+        <div class="col-sm-12">
+            <b>@Html.DisplayNameFor(model => model.WorkWeekends)</b>
+            @Html.DisplayFor(model => model.WorkWeekends)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+
+        <div class="col-sm-12">
+            <b>@Html.DisplayName("Project Documents")</b><br />
+            <a href="~/ProjectDocuments/@(Model.Documents)" target="_blank">
+                <i class="fa fa-file-pdf fa-2x facolor"></i>
+            </a><span>&nbsp;</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Costs</h2>
+            <br />
+			<div class="col-md-12">
+				<p class="lead">Total before VAT: <b>@TempData["Total"]</b></p>
+				<p class="lead">VAT:  <b>@TempData["VAT"]</b> </p>
+				<p class="lead">VAT inclusive Total: <b>@TempData["SubTotal"]</b></p>
+				<p class="lead">Discount: <b>- @TempData["Discount"]</b></p>
+				<p class="lead">Estimated Grand Total: <b>@(Model.EstimatedCost.ToString("C"))</b></p>
+			</div>
+        </div>
+    </div>
+</div>
+<hr />
+@if (Model.Declined || Model.Approved)
+{
+    <p>
+        <a class="btn btn-outline-dark" href="@(Url.Action("Index"))">Back</a>
+    </p>
+}
+else
+{
+    <p>
+        <a onclick="acceptItem('@Model.Id')" href="#" class="btn btn-outline-success"><span class="fa fa-check"></span> Accept</a>&nbsp;<a onclick="declineItem('@Model.Id')" href="#" class="btn btn-outline-danger"><span class="fa fa-times"></span> Decline</a>&nbsp;<a class="btn btn-outline-dark" href="@(Url.Action("Index"))">Back</a>
+    </p>
+}
+
+<script>
+     function acceptItem(id) {
+        var doAccept = confirm("Are you sure you want to accept this?");
+        if (doAccept) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("Accept")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+     function declineItem(id) {
+        var doDecline = confirm("Are you sure you want to decline this?");
+        if (doDecline) {
+            $.ajax({
+                type: "Get",
+                url: "@Url.Action("Decline")?id=" + id,
+                async: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (e) {
+                    return;
+                }
+            });
+        }
+    }
+</script>

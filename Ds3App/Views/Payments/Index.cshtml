@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Ds3App.Models.Payment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Payments</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProofOfPayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsOnlinePayment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QuotationReference)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmountDue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @if (item.IsOnlinePayment)
+        {
+            <b class="text-success">N/A</b>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(item.ProofOfPayment))
+            {
+                <a href="~/ProofOfPayment/@item.ProofOfPayment" target="_blank">
+                    <i class="fa fa-file-pdf fa-2x facolor"></i>
+                </a><span>&nbsp;</span>
+            }
+            else
+            {
+                <a href="@Url.Action("Upload", new { id = item.Id })"><span class="fa fa-file-upload fa-2x"></span></a>
+            }
+        }
+    </td>
+    <td>
+        @(item.IsOnlinePayment? "Yes":"No")
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.QuotationReference)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ProjectName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.AmountDue)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status)
+    </td>
+</tr>
+    }
+
+</table>

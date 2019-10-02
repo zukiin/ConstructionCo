@@ -1,0 +1,22 @@
+﻿
+@model Ds3App.Models.QuotationViewModel
+
+@foreach (var item in Model.QuoteMaterials)
+{
+    <tr>
+        <td>
+            @if (!string.IsNullOrEmpty(item.MaterialImage))
+            {
+                <img class="zoom" src="~/ProjImages/@(item.MaterialImage)" />
+            }
+            else
+            {
+                <b>n/a</b>
+            }
+        </td>
+        <td>@item.MaterialName</td>
+        <td>@item.MaterialDescription</td>
+        <td><input type="number" id="@(item.Id)|mat" value="@(item.Quantity)" style="max-width:100%;width:50px" /></td>
+        <td><a href="javascript:void(0)" onclick="updateMatQty('@item.Id')">Update Quantity</a></td>
+    </tr>
+}

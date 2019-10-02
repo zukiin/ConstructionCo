@@ -1,0 +1,58 @@
+﻿@model Ds3App.Models.Equipment
+@{
+	ViewBag.Title = "BookingConfirmation";
+}
+
+<h2>Booking Confirmation</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+	if (TempData["Message"] != null)
+	{
+		<p class="alert alert-danger">@TempData["Message"]</p>
+
+			}
+			<table class="table">
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.EquipmentImage)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.EquipmentName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Model)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Brand)
+					</th>
+				</tr>
+
+				<tr>
+					<td>
+						@if (!string.IsNullOrEmpty(Model.EquipmentImage))
+						{
+							<img class="img-thumbnail" style="width:200px" src="~/projimages/@(Model.EquipmentImage)" />
+						}
+						else
+						{
+							<b>n/a</b>
+						}
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => Model.EquipmentName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => Model.Model)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => Model.Brand)
+					</td>
+				</tr>
+			</table>
+
+			<div class="form-actions no-color text-center">
+				<input type="submit" value="Confirm" class="btn btn-primary" />
+			</div>
+			}
